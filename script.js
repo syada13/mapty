@@ -11,22 +11,39 @@ const inputDuration = document.querySelector('.form__input--duration');
 const inputCadence = document.querySelector('.form__input--cadence');
 const inputElevation = document.querySelector('.form__input--elevation');
 
-navigator.geolocation.getCurrentPosition(function (currPosition) {
-  const { latitude } = currPosition.coords;
-  const { longitude } = currPosition.coords;
-  const coords = [latitude, longitude];
-  var map = L.map('map').setView(coords, 13);
+if (navigator.geolocation)
+  navigator.geolocation.getCurrentPosition(function (currPosition) {
+    const { latitude } = currPosition.coords;
+    const { longitude } = currPosition.coords;
+    const coords = [latitude, longitude];
+    const map = L.map('map').setView(coords, 13);
 
-  L.tileLayer('https://tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', {
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-  }).addTo(map);
+    L.tileLayer('https://tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
 
-  L.marker(coords).addTo(map)
-    .bindPopup('A pretty CSS popup.<br> Easily customizable.')
-    .openPopup();
+    L.marker(coords).addTo(map)
+      .bindPopup('A pretty CSS popup.<br> Easily customizable.')
+      .openPopup();
 
-}, function () {
-  alert("Could not get your location.")
-});
+    map.on('click', function (mapEvent) {
+      const { lat, lng } = mapEvent.latlng;
+      L.marker([lat, lng]).addTo(map)
+        .bindPopup(
+          L.popup({
+            maxWidth: 250,
+            minWidth: 100,
+            autoClose: false,
+            closeOnClick: false,
+            className: 'running-popup'
+          })
+        )
+        .setPopupContent("Workout")
+        .openPopup();
+    })
+
+  }, function () {
+    alert("Could not get your location.")
+  });
 
 
