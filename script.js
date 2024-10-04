@@ -12,8 +12,19 @@ const inputCadence = document.querySelector('.form__input--cadence');
 const inputElevation = document.querySelector('.form__input--elevation');
 let map, mapEvent;
 
-if (navigator.geolocation)
-  navigator.geolocation.getCurrentPosition(function (currPosition) {
+class App {
+  constructor() {
+    this._getPosition();
+  }
+
+  _getPosition() {
+    if (navigator.geolocation)
+      navigator.geolocation.getCurrentPosition(this._loadMap, function () {
+        alert("Could not get your location.")
+      });
+  }
+
+  _loadMap(currPosition) {
     const { latitude } = currPosition.coords;
     const { longitude } = currPosition.coords;
     const coords = [latitude, longitude];
@@ -27,12 +38,26 @@ if (navigator.geolocation)
       mapEvent = mapE;
       form.classList.remove("hidden");
       inputDistance.focus();
-
     })
+  }
 
-  }, function () {
-    alert("Could not get your location.")
-  });
+  _showForm() {
+
+  }
+
+  _toggleElevationField() {
+
+  }
+
+  _newWorkout() {
+
+  }
+}
+
+// Create App class object
+const app = new App();
+//app._getPosition();
+
 
 form.addEventListener('submit', function (e) {
   e.preventDefault();
