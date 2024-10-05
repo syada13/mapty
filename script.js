@@ -115,8 +115,6 @@ class App {
     const { lat, lng } = this.#mapEvent.latlng;
     let workout;
 
-
-
     // If workout is running, create Running class object
     if (type === "running") {
       const cadence = +inputCadence.value;
@@ -139,7 +137,6 @@ class App {
 
       workout = new Cycling([lat, lng], distance, duration, elevation);
     }
-
 
     // Add new object to workout array
     this.#workouts.push(workout);
